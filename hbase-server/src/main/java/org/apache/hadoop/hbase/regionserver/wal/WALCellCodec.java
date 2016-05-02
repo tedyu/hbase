@@ -87,6 +87,17 @@ public class WALCellCodec implements Codec {
   }
 
   /**
+   * Retrieves custom WAL codec class name
+   * @param conf the Configuration from which WAL codec class is to be retrieved
+   * @return name of custom WAL codec class. If default codec is specified, return null
+   */
+  public static String getNonDefaultWALCellCodecClass(Configuration conf) {
+    String defaultCodec = WALCellCodec.class.getName();
+    String codec = conf.get(WAL_CELL_CODEC_CLASS_KEY, defaultCodec);
+    return !defaultCodec.equals(codec) ? codec : null;
+  }
+
+  /**
    * Create and setup a {@link WALCellCodec} from the {@code cellCodecClsName} and
    * CompressionContext, if {@code cellCodecClsName} is specified.
    * Otherwise Cell Codec classname is read from {@link Configuration}.
