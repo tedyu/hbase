@@ -293,13 +293,11 @@ public class WALPlayer extends Configured implements Tool {
       // No reducers.
       job.setNumReduceTasks(0);
     }
-    String codecCls = WALCellCodec.getNonDefaultWALCellCodecClass(conf);
-    if (codecCls != null) {
-      try {
-        TableMapReduceUtil.addDependencyJars(conf, Class.forName(codecCls));
-      } catch (Exception e) {
-        throw new IOException("Cannot determine wal codec class " + codecCls, e);
-      }
+    String codecCls = WALCellCodec.getWALCellCodecClass(conf);
+    try {
+      TableMapReduceUtil.addDependencyJars(conf, Class.forName(codecCls));
+    } catch (Exception e) {
+      throw new IOException("Cannot determine wal codec class " + codecCls, e);
     }
     return job;
   }
